@@ -62,6 +62,26 @@ err = pardiso!(
 
 @test pardiso_data_type(mtype,iparm) == Float64
 
+# pardiso_getdiag!
+
+iparm[56] = 1
+
+pt = new_pardiso_handle()
+
+err = pardiso!(
+  pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 
+
+df = zeros(Float64,n)
+da = zeros(Float64,n)
+
+err = pardiso_getdiag!(pt,df,da,mnum,mtype,iparm)
+
+@test err == 0
+
+err = pardiso_getdiag!(pt,df,da,mnum)
+
+@test err == 0
+
 # pardiso_64! (solving the transpose of the system above)
 
 pt = new_pardiso_handle()
@@ -74,6 +94,8 @@ iparm = new_iparm_64()
 
 err = pardiso_64!(
   pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 
+
+@test err == 0
 
 @test maximum(abs.(A'*x-b)) < tol
 

@@ -9,6 +9,7 @@ export pardiso_data_type
 export pardisoinit!
 export pardiso!
 export pardiso_64!
+export pardiso_getdiag!
 
 include("load_mkl.jl")
 
@@ -53,7 +54,6 @@ function __init__()
   MKL_PARDISO_LOADED[] = true
 
 end
-
 
 include("constructors.jl")
 

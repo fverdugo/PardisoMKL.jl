@@ -1,8 +1,18 @@
 
+macro check_if_loaded()
+  quote
+    if ! MKL_PARDISO_LOADED[]
+      error("MKL pardiso is not properly loaded")
+    end
+  end
+end
+
 function pardisoinit!(
   pt::Vector{Int},
   mtype::Integer,
   iparm::Vector{Int32})
+
+  @check_if_loaded
 
   ccall(
     pardisoinit_sym[],
@@ -32,6 +42,8 @@ function pardiso!(
   msglvl::Integer,
   b::Vector{T},
   x::Vector{T}) where T
+
+  @check_if_loaded
 
   @assert T == pardiso_data_type(mtype,iparm)
 
@@ -94,6 +106,8 @@ function pardiso_64!(
   b::Vector{T},
   x::Vector{T}) where T
 
+  @check_if_loaded
+
   @assert T == pardiso_data_type(mtype,iparm)
 
   err = Ref(zero(Int64))
@@ -133,6 +147,48 @@ function pardiso_64!(
     b,
     x,
     err)
+
+  return Int(err[])
+
+end
+
+function pardiso_getdiag!(
+  pt::Vector{Int},
+  df::Vector{T},
+  da::Vector{T},
+  mnum::Integer,
+  mtype::Integer,
+  iparm::Vector{<:Integer}) where T
+
+  @assert T == pardiso_data_type(mtype,iparm)
+
+  pardiso_getdiag!(pt,df,da,mnum)
+
+end
+
+function pardiso_getdiag!(
+  pt::Vector{Int},
+  df::Vector{T},
+  da::Vector{T},
+  mnum::Integer) where T
+
+  @check_if_loaded
+
+  err = Ref(zero(Int32))
+
+  ccall(
+   pardiso_getdiag_sym[],
+   Cvoid,(
+     Ptr{Int},
+     Ptr{Cvoid},
+     Ptr{Cvoid},
+     Ptr{Int32},
+     Ptr{Int32}),
+   pt,
+   df,
+   da,
+   Ref(Int32(mnum)),
+   err)
 
   return Int(err[])
 
