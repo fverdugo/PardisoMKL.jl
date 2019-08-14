@@ -1,6 +1,6 @@
 # PardisoMKL
 
-This package provides Julia bindings to the low level routines provided by the [Intel (R) MKL Pardiso direct sparse solver interface](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface). This package can only be used if a licended instalation of the Intel (R) MKL Pardiso is available in the system.  This package is available free of charge and in no way replaces or alters any functionality of the linked libraries.
+This package provides Julia bindings to the low level routines provided by the [Intel (R) MKL Pardiso direct sparse solver interface](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface). This package can only be used if a licensed installation of the Intel (R) MKL Pardiso is available in the system.  This package is available free of charge and in no way replaces or alters any functionality of the linked libraries.
 
 ## Why?
 
@@ -14,7 +14,9 @@ The goal of this package is to provide very thin wrappers to the low level Pardi
 
 ## API
 
-The most of the functions exported by `PardisoMKL` have the names of the underlying FORTRAN routines appended with an explamation sign (!) to denote that they modify some of the arguments. The julia wrappers return an integer error code if the underlying FORTRAN subrotuine accept an integer error code in the last argument. See the [Intel (R) MKL Pardiso manual](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface) for the particular meaning of each argument.
+* The most of the functions exported by `PardisoMKL` have the names of the underlying FORTRAN routines appended with an exclamation sign (!).
+* The Julia wrappers return an integer error code if the underlying FORTRAN subroutine accept an integer error code in the last argument.
+* The arguments in the Julia bindings are named as in the FORTRAN subroutines.  See the [Intel (R) MKL Pardiso manual](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface) for the particular details.
 
 
 ```julia
@@ -28,7 +30,7 @@ pardiso!( pt::Vector{Int}, maxfct::Integer, mnum::Integer, mtype::Integer,
   ja::Vector{Int32}, perm::Vector{Int32}, nrhs::Integer, iparm::Vector{Int32},
   msglvl::Integer, b::Vector{T}, x::Vector{T})::Int where T
 ```
-Calculates the solution of a set of sparse linear equations with single or multiple right-hand sides and returns an integer error code. The type `T` has to match the chosen matrix type (`mtype` argument) and the provided options (`iparm` argument). The valid type `T` can be retrived with the `pardiso_data_type` function (see below).
+Calculates the solution of a set of sparse linear equations with single or multiple right-hand sides and returns an integer error code. The type `T` has to match the chosen matrix type (`mtype` argument) and the provided options (`iparm` argument). The valid type `T` can be retrieved with the `pardiso_data_type` function (see below).
 
 
 ```julia
@@ -50,17 +52,17 @@ Writes the diagonal elements of initial and factorized matrix in the provided ve
 pardiso_getdiag!(pt::Vector{Int}, df::Vector{T}, da::Vector{T}, mnum::Integer,
   mtype::Integer, iparm::Vector{<:Integer})::Int where T
 ```
-Safer version of `pardiso_getdiag!` that cheks if the type `T` matches the given `mtype` and `iparm` arguments.
+Safer version of `pardiso_getdiag!` that checks if the type `T` matches the given `mtype` and `iparm` arguments.
 
 ```julia
 new_pardiso_handle()::Vector{Int}
 ```
-Allocates and returns a vector that can be used as the `pt` argument in previous functions.
+Allocates and returns a vector of zeros that can be used as the `pt` argument in previous functions.
 
 ```julia
 new_iparm()::Vector{Int32}
 ```
-Allocates and returns a vector that can be used as the `iparm` argument in previous functions.
+Allocates and returns a vector of zeros that can be used as the `iparm` argument in previous functions.
 
 
 ```julia
