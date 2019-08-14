@@ -20,11 +20,11 @@ x = zeros(Float64,n)
 
 # Create the pardiso internal handler
 
-pt = MKL_DSS_HANDLE()
+pt = new_pardiso_handle()
 
 # pardisoinit!
 
-iparm = zeros(Int32,64)
+iparm = new_iparm()
 
 pardisoinit!(pt,mtype,iparm)
 
@@ -64,13 +64,13 @@ err = pardiso!(
 
 # pardiso_64! (solving the transpose of the system above)
 
-pt = MKL_DSS_HANDLE()
+pt = new_pardiso_handle()
 
 a = A.nzval
 ia = A.colptr
 ja = A.rowval
 perm = zeros(Int64,n)
-iparm = zeros(Int64,64)
+iparm = new_iparm_64()
 
 err = pardiso_64!(
   pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 

@@ -1,13 +1,13 @@
 
 function pardisoinit!(
-  pt::MKL_DSS_HANDLE,
+  pt::Vector{Int},
   mtype::Integer,
   iparm::Vector{Int32})
 
   ccall(
     pardisoinit_sym[],
     Cvoid, (
-      _MKL_DSS_HANDLE_t,
+      Ptr{Int},
       Ptr{Int32},
       Ptr{Int32}),
     pt,
@@ -17,7 +17,7 @@ function pardisoinit!(
 end
 
 function pardiso!(
-  pt::MKL_DSS_HANDLE,
+  pt::Vector{Int},
   maxfct::Integer,
   mnum::Integer,
   mtype::Integer,
@@ -40,7 +40,7 @@ function pardiso!(
   ccall(
     pardiso_sym[],
     Cvoid, (
-      _MKL_DSS_HANDLE_t,
+      Ptr{Int},
       Ptr{Int32},
       Ptr{Int32},
       Ptr{Int32},
@@ -78,7 +78,7 @@ function pardiso!(
 end
 
 function pardiso_64!(
-  pt::MKL_DSS_HANDLE,
+  pt::Vector{Int},
   maxfct::Integer,
   mnum::Integer,
   mtype::Integer,
@@ -101,7 +101,7 @@ function pardiso_64!(
   ccall(
     pardiso_64_sym[],
     Cvoid, (
-      _MKL_DSS_HANDLE_t,
+      Ptr{Int},
       Ptr{Int64},
       Ptr{Int64},
       Ptr{Int64},

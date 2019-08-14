@@ -2,7 +2,9 @@ module PardisoBindings
 
 using Libdl
 
-export MKL_DSS_HANDLE
+export new_pardiso_handle
+export new_iparm
+export new_iparm_64
 export pardiso_data_type
 export pardisoinit!
 export pardiso!
@@ -52,7 +54,8 @@ function __init__()
 
 end
 
-include("mkl_dss_handle.jl")
+
+include("constructors.jl")
 
 include("bindings.jl")
 
