@@ -33,7 +33,7 @@ function pardiso!(
   b::Vector{T},
   x::Vector{T}) where T
 
-  _check_value_type(T,mtype)
+  @assert T == pardiso_data_type(mtype,iparm)
 
   err = Ref(zero(MKL_INT))
 
@@ -77,6 +77,30 @@ function pardiso!(
 
 end
 
-function _check_value_type(::Type{T},mtype) where T
-  @assert T == MKL_FLOAT
+function pardiso_data_type(mtype::Integer,iparm::Vector{Int32})
+
+  # Rules taken from
+  # https://software.intel.com/en-us/mkl-developer-reference-fortran-pardiso-data-type
+
+  T::DataType = Any
+
+  if mtype in (1,2,-2,11)
+    if iparm[28] == 0
+      T = Float64
+    else
+      T = Float32
+    end
+  elseif mtype in (3,6,13,4,-4)
+    if iparm[28] == 0
+      T = Complex{Float64}
+    else
+      T = Complex{Float32}
+    end
+  else
+    error("Unknown matrix type: mtype = $mtype")
+  end
+
+  T
+
 end
+

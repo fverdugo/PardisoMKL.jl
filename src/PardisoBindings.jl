@@ -6,6 +6,7 @@ export MKL_DSS_HANDLE
 export MKL_INT
 export MKL_FLOAT
 
+export pardiso_data_type
 export pardisoinit!
 export pardiso!
 

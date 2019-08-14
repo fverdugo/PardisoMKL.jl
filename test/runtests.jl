@@ -12,6 +12,8 @@ A = sparse([
   -3  5  1 1
   1 -3 0 2 ])
 
+n = A.n
+
 b = MKL_FLOAT[1, 3, 2, 5]
 
 x = zeros(MKL_FLOAT,n)
@@ -31,7 +33,6 @@ pardisoinit!(pt,mtype,iparm)
 maxfct = 1
 mnum = 1
 phase = 13
-n = A.n
 a = A.nzval
 ia = Vector{MKL_INT}(A.colptr)
 ja = Vector{MKL_INT}(A.rowval)
@@ -56,4 +57,7 @@ err = pardiso!(
   pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 
 
 @test maximum(abs.(A*x-b)) < tol
+
+@test pardiso_data_type(mtype,iparm) == Float64
+
 
