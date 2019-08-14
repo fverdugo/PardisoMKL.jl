@@ -14,11 +14,14 @@ The goal of this package is to provide very thin wrappers to the low level Pardi
 
 ## API
 
-The functions exported by `PardisoMKL` have the names of the underlying FORTRAN routines appended with an explamation sign (!) to denote that they modify some of the arguments. The julia wrappers return an integer error code if the underlying FORTRAN subrotuine accept an integer error code in the last argument.
+The most of the functions exported by `PardisoMKL` have the names of the underlying FORTRAN routines appended with an explamation sign (!) to denote that they modify some of the arguments. The julia wrappers return an integer error code if the underlying FORTRAN subrotuine accept an integer error code in the last argument. See the [Intel (R) MKL Pardiso manual](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface) for the particular meaning of each argument.
 
+Initializes Intel MKL PARDISO with default parameters depending on the matrix type.
 ```julia
 pardisoinit!(pt::Vector{Int},mtype::Integer,iparm::Vector{Int32})
 ```
+
+Calculates the solution of a set of sparse linear equations with single or multiple right-hand sides.
 ```julia
 pardiso!( pt::Vector{Int}, maxfct::Integer, mnum::Integer, mtype::Integer,
   phase::Integer, n::Integer, a::Vector{T}, ia::Vector{Int32},
@@ -33,5 +36,5 @@ pardiso_64!(pt::Vector{Int}, maxfct::Integer, mnum::Integer, mtype::Integer,
   msglvl::Integer, b::Vector{T}, x::Vector{T})::Int where T
 ```
 
-See the [Intel (R) MKL Pardiso manual](https://software.intel.com/en-us/mkl-developer-reference-fortran-intel-mkl-pardiso-parallel-direct-sparse-solver-interface) for the particular meaning of each argument.
+
 
