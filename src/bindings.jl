@@ -77,7 +77,68 @@ function pardiso!(
 
 end
 
-function pardiso_data_type(mtype::Integer,iparm::Vector{Int32})
+function pardiso_64!(
+  pt::MKL_DSS_HANDLE,
+  maxfct::Integer,
+  mnum::Integer,
+  mtype::Integer,
+  phase::Integer,
+  n::Integer,
+  a::Vector{T},
+  ia::Vector{Int64},
+  ja::Vector{Int64},
+  perm::Vector{Int64},
+  nrhs::Integer,
+  iparm::Vector{Int64},
+  msglvl::Integer,
+  b::Vector{T},
+  x::Vector{T}) where T
+
+  @assert T == pardiso_data_type(mtype,iparm)
+
+  err = Ref(zero(Int64))
+
+  ccall(
+    pardiso_64_sym[],
+    Cvoid, (
+      _MKL_DSS_HANDLE_t,
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Cvoid},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Int64},
+      Ptr{Cvoid},
+      Ptr{Cvoid},
+      Ptr{Int64}),
+    pt,
+    Ref(Int64(maxfct)),
+    Ref(Int64(mnum)),
+    Ref(Int64(mtype)),
+    Ref(Int64(phase)),
+    Ref(Int64(n)),
+    a,
+    ia,
+    ja,
+    perm,
+    Ref(Int64(nrhs)),
+    iparm,
+    Ref(Int64(msglvl)),
+    b,
+    x,
+    err)
+
+  return Int(err[])
+
+end
+
+function pardiso_data_type(mtype::Integer,iparm::Vector{<:Integer})
 
   # Rules taken from
   # https://software.intel.com/en-us/mkl-developer-reference-fortran-pardiso-data-type

@@ -56,8 +56,24 @@ iparm[12] = 2
 err = pardiso!(
   pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 
 
+@test err == 0
+
 @test maximum(abs.(A*x-b)) < tol
 
 @test pardiso_data_type(mtype,iparm) == Float64
 
+# pardiso_64! (solving the transpose of the system above)
+
+pt = MKL_DSS_HANDLE()
+
+a = A.nzval
+ia = A.colptr
+ja = A.rowval
+perm = zeros(Int64,n)
+iparm = zeros(Int64,64)
+
+err = pardiso_64!(
+  pt,maxfct,mnum,mtype,phase,n,a,ia,ja,perm,nrhs,iparm,msglvl,b,x) 
+
+@test maximum(abs.(A'*x-b)) < tol
 

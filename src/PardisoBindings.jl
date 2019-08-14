@@ -6,6 +6,7 @@ export MKL_DSS_HANDLE
 export pardiso_data_type
 export pardisoinit!
 export pardiso!
+export pardiso_64!
 
 include("load_mkl.jl")
 
@@ -22,6 +23,7 @@ include(deps_jl)
 
 const pardisoinit_sym = Ref{Ptr}()
 const pardiso_sym = Ref{Ptr}()
+const pardiso_64_sym = Ref{Ptr}()
 const pardiso_getenv_sym = Ref{Ptr}()
 const pardiso_setenv_sym = Ref{Ptr}()
 const pardiso_getdiag_sym = Ref{Ptr}()
@@ -37,6 +39,7 @@ function __init__()
 
   pardisoinit_sym[] = Libdl.dlsym(libmkl,:pardisoinit)
   pardiso_sym[] = Libdl.dlsym(libmkl,:pardiso )
+  pardiso_64_sym[] = Libdl.dlsym(libmkl,:pardiso_64 )
   pardiso_getenv_sym[] = Libdl.dlsym(libmkl,:pardiso_getenv)
   pardiso_setenv_sym[] = Libdl.dlsym(libmkl,:pardiso_setenv)
   pardiso_getdiag_sym[] = Libdl.dlsym(libmkl,:pardiso_getdiag)
