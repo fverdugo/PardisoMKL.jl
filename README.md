@@ -41,8 +41,28 @@ pardiso_64!(pt::Vector{Int}, maxfct::Integer, mnum::Integer, mtype::Integer,
 
 
 ```julia
-function pardiso_getdiag!(pt::Vector{Int}, df::Vector{T}, da::Vector{T}, mnum::Integer)::Int where T
+pardiso_getdiag!(pt::Vector{Int}, df::Vector{T}, da::Vector{T}, mnum::Integer)::Int where T
 ```
 Writes the diagonal elements of initial and factorized matrix in the provided vectors and returns an integer error code. The type `T` is previously detailed for `pardiso!`.
 
+```julia
+new_pardiso_handle()::Vector{Int}
+```
+Allocates and returns a vector that can be used as the `pt` argument in previous functions.
+
+```julia
+new_iparm()::Vector{Int32}
+```
+Allocates and returns a vector that can be used as the `iparm` argument in previous functions.
+
+
+```julia
+new_iparm_64()::Vector{Int64}
+```
+64-bit version of `new_iparm`. To be used in `pardiso_64!`
+
+```julia
+pardiso_data_type(mtype::Integer,iparm::Vector{<:Integer})::DataType
+```
+Returns the data type associated with the  matrix type `mtype` and the options in `iparm`.
 
