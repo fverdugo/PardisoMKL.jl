@@ -14,9 +14,9 @@ A = sparse([
 
 n = A.n
 
-b = MKL_FLOAT[1, 3, 2, 5]
+b = Float64[1, 3, 2, 5]
 
-x = zeros(MKL_FLOAT,n)
+x = zeros(Float64,n)
 
 # Create the pardiso internal handler
 
@@ -24,7 +24,7 @@ pt = MKL_DSS_HANDLE()
 
 # pardisoinit!
 
-iparm = zeros(MKL_INT,64)
+iparm = zeros(Int32,64)
 
 pardisoinit!(pt,mtype,iparm)
 
@@ -34,9 +34,9 @@ maxfct = 1
 mnum = 1
 phase = 13
 a = A.nzval
-ia = Vector{MKL_INT}(A.colptr)
-ja = Vector{MKL_INT}(A.rowval)
-perm = zeros(MKL_INT,n)
+ia = Vector{Int32}(A.colptr)
+ja = Vector{Int32}(A.rowval)
+perm = zeros(Int32,n)
 nrhs = 1
 msglvl = 0
 

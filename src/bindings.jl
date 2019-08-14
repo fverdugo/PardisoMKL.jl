@@ -2,16 +2,16 @@
 function pardisoinit!(
   pt::MKL_DSS_HANDLE,
   mtype::Integer,
-  iparm::Vector{MKL_INT})
+  iparm::Vector{Int32})
 
   ccall(
     pardisoinit_sym[],
     Cvoid, (
       _MKL_DSS_HANDLE_t,
-      Ptr{MKL_INT},
-      Ptr{MKL_INT}),
+      Ptr{Int32},
+      Ptr{Int32}),
     pt,
-    Ref(MKL_INT(mtype)),
+    Ref(Int32(mtype)),
     iparm)
 
 end
@@ -24,51 +24,51 @@ function pardiso!(
   phase::Integer,
   n::Integer,
   a::Vector{T},
-  ia::Vector{MKL_INT},
-  ja::Vector{MKL_INT},
-  perm::Vector{MKL_INT},
+  ia::Vector{Int32},
+  ja::Vector{Int32},
+  perm::Vector{Int32},
   nrhs::Integer,
-  iparm::Vector{MKL_INT},
+  iparm::Vector{Int32},
   msglvl::Integer,
   b::Vector{T},
   x::Vector{T}) where T
 
   @assert T == pardiso_data_type(mtype,iparm)
 
-  err = Ref(zero(MKL_INT))
+  err = Ref(zero(Int32))
 
   ccall(
     pardiso_sym[],
     Cvoid, (
       _MKL_DSS_HANDLE_t,
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
       Ptr{Cvoid},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
-      Ptr{MKL_INT},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
+      Ptr{Int32},
       Ptr{Cvoid},
       Ptr{Cvoid},
-      Ptr{MKL_INT}),
+      Ptr{Int32}),
     pt,
-    Ref(MKL_INT(maxfct)),
-    Ref(MKL_INT(mnum)),
-    Ref(MKL_INT(mtype)),
-    Ref(MKL_INT(phase)),
-    Ref(MKL_INT(n)),
+    Ref(Int32(maxfct)),
+    Ref(Int32(mnum)),
+    Ref(Int32(mtype)),
+    Ref(Int32(phase)),
+    Ref(Int32(n)),
     a,
     ia,
     ja,
     perm,
-    Ref(MKL_INT(nrhs)),
+    Ref(Int32(nrhs)),
     iparm,
-    Ref(MKL_INT(msglvl)),
+    Ref(Int32(msglvl)),
     b,
     x,
     err)
