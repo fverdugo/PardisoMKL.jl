@@ -1,3 +1,39 @@
+using Libdl
+
+function _find_gcclibdir()
+
+  gcc_bin = Sys.which("gcc")
+  @show gcc_bin
+
+  if  "/usr/bin" == gcc_bin[1:8]
+    return _find_gcclibdir_in_system()
+  else
+    s = """
+    This package does not work with custom installations of gcc for the moment
+    """
+    error(s)
+  end
+
+end
+
+function _find_gcclibdir_in_system()
+  for v in [6,7,8]
+    gcclibdir = "/usr/lib/gcc/x86_64-linux-gnu/$v"
+    if isdir(gcclibdir)
+      l = Libdl.find_library(joinpath(gcclibdir,"libgomp"))
+      if l != ""
+        return gcclibdir
+      end
+    end
+  end
+  s = """
+  libgomp could not be found in system. Try
+  \$ sudo apt-get install libgomp1
+  """
+  error(s)
+  ""
+end
+
 deps_jl = "deps.jl"
 
 if isfile(deps_jl)
@@ -19,7 +55,6 @@ mklroot = ENV["MKLROOT"]
 
 mkllibdir = joinpath(mklroot,"lib/intel64")
 
-
 if ! isdir(mkllibdir)
   s = """
   MKL lib directory not found: $mkllibdir
@@ -29,7 +64,7 @@ end
 
 @info "MKL libraries found at: $mkllibdir"
 
-gcclibdir = "/usr/lib/gcc/x86_64-linux-gnu/6"
+gcclibdir = _find_gcclibdir()
 
 if ! isdir(gcclibdir)
   s = """

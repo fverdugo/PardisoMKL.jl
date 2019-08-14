@@ -1,4 +1,4 @@
-using PardisoBindings
+using PardisoMKL
 using Test
 using SparseArrays
 

@@ -1,4 +1,4 @@
-module PardisoBindings
+module PardisoMKL
 
 using Libdl
 
