@@ -43,7 +43,14 @@ pardiso_64!(pt::Vector{Int}, maxfct::Integer, mnum::Integer, mtype::Integer,
 ```julia
 pardiso_getdiag!(pt::Vector{Int}, df::Vector{T}, da::Vector{T}, mnum::Integer)::Int where T
 ```
-Writes the diagonal elements of initial and factorized matrix in the provided vectors and returns an integer error code. The type `T` is previously detailed for `pardiso!`.
+Writes the diagonal elements of initial and factorized matrix in the provided vectors and returns an integer error code. The type `T` is as previously detailed for `pardiso!`.
+
+
+```julia
+pardiso_getdiag!(pt::Vector{Int}, df::Vector{T}, da::Vector{T}, mnum::Integer,
+  mtype::Integer, iparm::Vector{<:Integer})::Int where T
+```
+Safer version of `pardiso_getdiag!` that cheks if the type `T` matches the given `mtype` and `iparm` arguments.
 
 ```julia
 new_pardiso_handle()::Vector{Int}
