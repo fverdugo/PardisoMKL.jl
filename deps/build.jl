@@ -3,15 +3,11 @@ using Libdl
 function _find_gcclibdir()
 
   gcc_bin = Sys.which("gcc")
-  @show gcc_bin
 
   if  "/usr/bin" == gcc_bin[1:8]
     return _find_gcclibdir_in_system()
   else
-    s = """
-    This package does not work with custom installations of gcc for the moment
-    """
-    error(s)
+    return _find_gcclibdir_custom()
   end
 
 end
@@ -32,6 +28,16 @@ function _find_gcclibdir_in_system()
   """
   error(s)
   ""
+end
+
+function _find_gcclibdir_custom()
+  gcc_bin = Sys.which("gcc")
+  gcc_root = gcc_bin[1:(end-8)]
+  gcclibdir = joinpath(gcc_root,"lib64")
+  if ! isdir(gcclibdir)
+    error("lib64 directory not gound in gcc instalation: $gcclibdir")
+  end
+  gcclibdir
 end
 
 deps_jl = "deps.jl"
