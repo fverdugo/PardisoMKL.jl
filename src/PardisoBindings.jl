@@ -49,7 +49,7 @@ function __init__()
 
 end
 
-include("constants.jl")
+include("mkl_dss_handle.jl")
 
 include("bindings.jl")
 
